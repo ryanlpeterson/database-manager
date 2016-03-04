@@ -1,4 +1,4 @@
-class EntertainmentItem:
+class Record:
     __title = ""
     __length = 0
     __amount_completed = 0
