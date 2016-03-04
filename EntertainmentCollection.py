@@ -1,34 +1,34 @@
 import os
-from EntertainmentItem import EntertainmentItem
+from Record import Record
 
-class EntertainmentCollection:
-    __collection = []
+class Table:
+    __records = []
     __longest_title = ""
     __longest_length = 0
     __longest_amount_completed = 0
 
-    __collection_title = ""
+    __table_title = ""
 
-    def __init__(self, collection_title):
-        self.__collection_title = collection_title
+    def __init__(self, table_title):
+        self.__table_title = table_title
 
-    def add_item(self, entertainment_item):
-        self.__collection.append(entertainment_item)
-        if len(entertainment_item.get_title()) > len(self.__longest_title):
-            self.__longest_title = entertainment_item.get_title()
-        if entertainment_item.get_length() > self.__longest_length:
-            self.__longest_length = entertainment_item.get_length()
-        if entertainment_item.get_amount_completed() > self.__longest_amount_completed:
-            self.__longest_amount_completed = entertainment_item.get_amount_completed()
+    def add_item(self, record):
+        self.__records.append(record)
+        if len(record.get_title()) > len(self.__longest_title):
+            self.__longest_title = record.get_title()
+        if record.get_length() > self.__longest_length:
+            self.__longest_length = record.get_length()
+        if record.get_amount_completed() > self.__longest_amount_completed:
+            self.__longest_amount_completed = record.get_amount_completed()
 
         self.clear_and_print()
 
     def delete_item(self, name):
-        print(len(self.__collection))
-        print(self.__collection)
-        for i in range(0, len(self.__collection)):
-            if self.__collection[i].get_title() == name:
-                del self.__collection[i]
+        print(len(self.__records))
+        print(self.__records)
+        for i in range(0, len(self.__records)):
+            if self.__records[i].get_title() == name:
+                del self.__records[i]
                 break
 
         self.clear_and_print()
@@ -56,33 +56,33 @@ class EntertainmentCollection:
     def open_file(file_name):
         file = open(file_name, "r")
         text_in_file = file.read()
-        parts_of_collection = text_in_file.split("\n")
+        parts_of_record = text_in_file.split("\n")
 
-        print(parts_of_collection)
+        print(parts_of_record)
 
-        new_collection = EntertainmentCollection(parts_of_collection[0])
+        new_record = Table(parts_of_record[0])
 
-        for i in range(1, len(parts_of_collection)):
-            parts_of_item = parts_of_collection[i].split("|")
+        for i in range(1, len(parts_of_record)):
+            parts_of_item = parts_of_record[i].split("|")
             print(parts_of_item)
             item_title = parts_of_item[0]
             item_amount_completed = int(parts_of_item[1])
             item_length = int(parts_of_item[2])
-            new_collection.__collection.append(EntertainmentItem(item_title, item_amount_completed, item_length))
-            if len(item_title) > len(new_collection.__longest_title):
-                new_collection.__longest_title = item_title
-            if item_amount_completed > new_collection.__longest_amount_completed:
-                new_collection.__longest_amount_completed = item_amount_completed
-            if item_length > new_collection.__longest_length:
-                new_collection.__longest_length = item_length
+            new_record.__records.append(Record(item_title, item_amount_completed, item_length))
+            if len(item_title) > len(new_record.__longest_title):
+                new_record.__longest_title = item_title
+            if item_amount_completed > new_record.__longest_amount_completed:
+                new_record.__longest_amount_completed = item_amount_completed
+            if item_length > new_record.__longest_length:
+                new_record.__longest_length = item_length
 
-        new_collection.clear_and_print()
+        new_record.clear_and_print()
 
-        return new_collection
+        return new_record
 
-    def clear_collection(self):
-        self.__collection_title = ""
-        self.__collection.clear()
+    def clear_table(self):
+        self.__table_title = ""
+        self.__records.clear()
         self.__longest_title = ""
         self.__longest_amount_completed = 0
         self.__longest_length = 0
@@ -93,23 +93,23 @@ class EntertainmentCollection:
         spaces.append("\t") #what if the length is greater than 1000, will that mess up the alignment???
         spaces.append("\t")
         title_bar = "Title" + spaces[0] + "Amount Completed" + spaces[1] + "Total Length" + spaces[2] + "Percent Completed"
-        collection_string = "{0} \n{1} \n{2} \n{3} \n".format(self.__collection_title,
-                                                   "-" * (len(self.__collection_title) + 2),
+        table_string = "{0} \n{1} \n{2} \n{3} \n".format(self.__table_title,
+                                                   "-" * (len(self.__table_title) + 2),
                                                    title_bar,
                                                    "-" * 79)
 
-        for i in self.__collection:
-            collection_string += "{} \n".format(i.to_string(self.__longest_title,
+        for i in self.__records:
+            table_string += "{} \n".format(i.to_string(self.__longest_title,
                                                           self.__longest_length,
                                                           self.__longest_amount_completed))
-        return collection_string
+        return table_string
 
     def to_string_for_file(self):
-        collection_string = self.__collection_title
+        record_string = self.__table_title
 
-        for i in self.__collection:
-            collection_string += "\n{}".format(i.to_string_for_file())
-        return collection_string
+        for i in self.__records:
+            record_string += "\n{}".format(i.to_string_for_file())
+        return record_string
 
     def clear_and_print(self):
         print("\n" * 10)
